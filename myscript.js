@@ -46,7 +46,7 @@ In general for the formula above, Co < 0. Alternatively, we could write:
 	NPV = SIGMA  ---------- - Co
 			n=1     (1+r)^n
 
-	where Co < 0
+	where Co > 0
 */
 function CalcNPV(values,r)
 {
