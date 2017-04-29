@@ -1,0 +1,27 @@
+/*CSS Styling*/
+
+html{
+    height: 100%;
+    text-align:center;
+    background:#293e6f;
+}
+
+body{
+
+    background: #ffffff;
+    min-height: 100%; 
+    width: 600px; 
+    margin: 0 auto; 
+    padding: 0 20px;
+	border: 1px solid black; 
+    border-width: 0 1px;
+}
+
+table, th, td {
+    border: 1px solid black;
+    text-align: center;
+}
+
+canvas{
+    border:1px solid #000000;
+}

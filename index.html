@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<!--HEAD-->
+<head>
+    <title>Sequence of Return Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="myscript.js"></script>
+</head>
+
+<!--BODY-->
+<body onload="myFunction()">
+
+    <h1 style="color:#1b722b;">Random Returns</h1>
+
+    <p style="color:#A9A9A9;">Sequence risk, also called sequence-of-returns risk, 
+    is the risk of receiving lower or negative returns early in a period when withdrawals
+     are made from an individual's underlying investments. The order or the
+     sequence of investment returns is a primary concern for retirees who are living
+     off the income and capital of their investments.</p>
+
+    <hr />
+
+    <form id="frm1">
+        Initial Balance:<input type="number" id="bal" value="100000" />
+        <br />
+        Withdrawal Rate:<input type="number" id="rate" min="0" max="100" step="1" value="2">
+        <br />
+        Gains Captured:<input type="number" id="gains" min="0" max="100" step="1" value="50">
+        <br />
+        From
+        <input type="number" id="beginYr" min="1999" max="2015" step="1" value="1999">
+        to
+        <input type="number" id="endYr" min="2000" max="2016" step="1" value="2014">
+    </form>
+    <button onclick="reset_input()">Reset Input</button>
+    <br /><br />
+
+    <button onclick="myFunction()">Calculate</button> 
+
+    <h3>Graph</h3>
+    <p style="color:red;">Series 1: Table 1 Data</p>
+    <p style="color:blue;">Series 2:Table 2 Data</p>
+    <canvas id="myCanvas" width="550" height="300"></canvas>
+
+    <div id="tableArea1" class="container"></div>
+    <h4 id="demo"></h4>
+    <div id="tableArea2" class="container"></div>
+
+    <br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+</body>
+
+</html>
