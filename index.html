@@ -22,20 +22,22 @@
     <hr />
 
     <form id="frm1">
-        Initial Balance:<input type="number" id="bal" value="100000" />
+        Initial Balance:<input type="number" onchange="myFunction()" id="bal" value="100000" />
         <br />
-        Withdrawal Rate:<input type="number" id="rate" min="0" max="100" step="1" value="2">
+        Withdrawal Rate:<input type="number" onchange="myFunction()" id="rate" min="0" max="100" step="1" value="2">
         <br />
-        Gains Captured:<input type="number" id="gains" min="0" max="100" step="1" value="50">
+        Gains Captured:<input type="number" onchange="myFunction()" id="gains" min="0" max="100" step="1" value="50">
         <br />
         From
-        <input type="number" id="beginYr" min="1999" max="2015" step="1" value="1999">
+        <input type="number" id="beginYr" onchange="myFunction()" min="1999" max="2015" step="1" value="1999">
         to
-        <input type="number" id="endYr" min="2000" max="2016" step="1" value="2014">
+        <input type="number" id="endYr" onchange="myFunction()" min="2000" max="2016" step="1" value="2014">
+        <br/>
+        Cap Rate:<input type="number" onchange="myFunction()" id="cap" min="0" max="100" step="1" value="5">
+        <br />
     </form>
     <button onclick="reset_input()">Reset Input</button>
     <br /><br />
-
     <button onclick="myFunction()">Calculate</button> 
 
     <h3>Graph</h3>
@@ -46,6 +48,8 @@
     <div id="tableArea1" class="container"></div>
     <h4 id="demo"></h4>
     <div id="tableArea2" class="container"></div>
+    <br/>
+    <div id="tableArea3" class="container"></div>
 
     <br /><br /><br /><br /><br /><br /><br /><br /><br />
 

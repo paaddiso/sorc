@@ -175,7 +175,7 @@ function plotData(xvals, yvals,graph, ColorString, first_time)
     }
 }
 
-function drawTheGraph(x1vals, y1vals, x2vals, y2vals) {
+function drawTheGraph(x1vals, y1vals, x2vals, y2vals, x3vals, y3vals) {
 
     var canvas_width = Number(document.getElementById("myCanvas").getAttribute("width"));
     var canvas_height = Number(document.getElementById("myCanvas").getAttribute("height"));
@@ -184,20 +184,33 @@ function drawTheGraph(x1vals, y1vals, x2vals, y2vals) {
     var x1max = arrayMax(x1vals);
     var x2min = arrayMin(x2vals);
     var x2max = arrayMax(x2vals);
+    var x3min = arrayMin(x3vals);
+    var x3max = arrayMax(x3vals);
 
     var y1min = arrayMin(y1vals);
     var y1max = arrayMax(y1vals);
     var y2min = arrayMin(y2vals);
     var y2max = arrayMax(y2vals);
+    var y3min = arrayMin(y3vals);
+    var y3max = arrayMax(y3vals);
 
     var xmin = Math.min(x1min, x2min);
+    xmin = Math.min(xmin,x3min);
+
     var xmax = Math.max(x1max, x2max);
+    xmax = Math.max(xmax,x3max);
+
     var ymin = Math.min(y1min, y2min);
+    ymin = Math.min(ymin,y3min);
+
     var ymax = Math.max(y1max, y2max);
+    ymax = Math.max(ymax,y3max);
+
     var graph = { x_min: xmin, x_max: xmax, y_min: ymin, y_max: ymax };
 
     plotData(x1vals, y1vals, graph, "red", true);
     plotData(x2vals, y2vals, graph, "blue", false);
+    plotData(x3vals, y3vals, graph, "green", false);
 }
 
 function calcTable(table, initial_balance, rate)
@@ -292,6 +305,7 @@ function myFunction() {
     var gains = Number(document.getElementById("frm1").elements[2].value) / 100;
     var begYr = Number(document.getElementById("frm1").elements[3].value);
     var endYr = Number(document.getElementById("frm1").elements[4].value);
+    var capRate = Number(document.getElementById("frm1").elements[5].value)/100;
 
     //check input
     if (begYr < 1999)
@@ -337,7 +351,23 @@ function myFunction() {
     //console.log(table1);
 
     //init table2
-    var table2 = [];
+    var table2 = [];//capped
+    for (var y = begYr, i = 0; y <= endYr; y++, i++)
+    {
+        var sp_index = y - 1999;
+        var sp = sp500[sp_index];
+        if (sp > 0)
+            sp = sp * gains;
+        else
+            sp = 0.0;
+        if(sp > capRate)
+            sp = capRate;
+        var row = { year: y, balance: 0, historical_return: sp, withdrawal: 0 };
+        table2.push(row);
+    }
+
+    //init table3
+    var table3 = [];//uncapped
     for (var y = begYr, i = 0; y <= endYr; y++, i++)
     {
         var sp_index = y - 1999;
@@ -347,17 +377,19 @@ function myFunction() {
         else
             sp = 0.0;
         var row = { year: y, balance: 0, historical_return: sp, withdrawal: 0 };
-        table2.push(row);
+        table3.push(row);
     }
 
     //calculate values
     calcTable(table1,bal,rate);
     calcTable(table2,bal,rate);
+    calcTable(table3,bal,rate);
 
     //draw tables
     drawTable(table1, 'tableArea1', "Table 1");//javascript uses either single quotes or double quotes for strings, it doesn't mater
     document.getElementById("demo").innerHTML = "<br/><br/>Gains Captured = " + document.getElementById("frm1").elements[2].value + "%";
-    drawTable(table2, 'tableArea2', "Table 2");//javascript uses either single quotes or double quotes for strings, it doesn't mater
+    drawTable(table2, 'tableArea2', "Capped");//javascript uses either single quotes or double quotes for strings, it doesn't mater
+    drawTable(table3, 'tableArea3', "Uncapped");
 
     //initialize x&y values
     var x1vals = [];
@@ -374,8 +406,15 @@ function myFunction() {
         y2vals.push(table2[i].balance);
     }
 
+    var x3vals = [];
+    var y3vals = [];
+    for (var i = 0; i < table3.length-1; i++) {
+        x3vals.push(i);
+        y3vals.push(table3[i].balance);
+    }
+
     //draw graph
-    drawTheGraph(x1vals, y1vals, x2vals, y2vals);
+    drawTheGraph(x1vals, y1vals, x2vals, y2vals,x3vals,y3vals);
    
 }
 
