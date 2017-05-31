@@ -21,6 +21,16 @@ function arrayMax(arr) {
     return max;
 };
 
+function shuffleArray(arr) {//Durstenfeld shuffle algorithm
+    for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+    return arr;
+}
+
 /*
 Net Present Value - NPV
 
@@ -297,7 +307,7 @@ function drawTable(table, displayID, Title_of_Table)
     document.getElementById(displayID).innerHTML = tableText;
 }
 
-function myFunction() {
+function myFunction(b_randomize) {
 
     //get user input
     var bal = Number(document.getElementById("frm1").elements[0].value);
@@ -341,11 +351,16 @@ function myFunction() {
     sp500.push(0.0954);//2016
 
     //init table1
+    var years = [];
+    for (var y = begYr; y <= endYr; y++)
+        years.push(y);
+    if (b_randomize)
+        shuffleArray(years);
+
     var table1 = [];
-    for (var y = begYr, i = 0; y <= endYr; y++, i++)
-    {
-        var sp_index = y - 1999;
-        var row = { year: y, balance: 0, historical_return: sp500[sp_index], withdrawal: 0 };
+    for (var i = 0; i < years.length - 1; i++) {
+        var sp_index = years[i] - 1999;
+        var row = { year: years[i], balance: 0, historical_return: sp500[sp_index], withdrawal: 0 };
         table1.push(row);
     }
     //console.log(table1);
@@ -414,8 +429,32 @@ function myFunction() {
     }
 
     //draw graph
-    drawTheGraph(x1vals, y1vals, x2vals, y2vals,x3vals,y3vals);
-   
+    if (!b_randomize)
+    {
+        var canvas = document.getElementById("myCanvas");
+        canvas.width = 550;
+        canvas.height = 300;
+        drawTheGraph(x1vals, y1vals, x2vals, y2vals,x3vals,y3vals);
+    }
+    else
+    {
+        //remove graph (chronological order doesn't make sense when years are randomized)
+        var canvas = document.getElementById("myCanvas");
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        canvas.width = 0;
+        canvas.height = 0;
+    }
+    
+}
+
+/*Button Functions*/
+
+function normal_calc() {
+    myFunction(false);
+}
+
+function rand_calc() {
+    myFunction(true);
 }
 
 function reset_input()
@@ -425,5 +464,5 @@ function reset_input()
     document.getElementById("frm1").elements[2].value = "50";
     document.getElementById("frm1").elements[3].value = "1999";
     document.getElementById("frm1").elements[4].value = "2014";
-    //myFunction();
+    normal_calc();
 }
